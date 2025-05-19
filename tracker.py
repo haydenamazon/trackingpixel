@@ -12,7 +12,8 @@ logging.basicConfig(filename='tracker.log', level=logging.INFO, format='%(messag
 @app.route('/pixel/<uid>.png')
 def tracking_pixel(uid):
     # Collect request data
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    ip = x_forwarded_for.split(',')[0].strip() if x_forwarded_for else request.remote_addr
     user_agent = request.headers.get('User-Agent', 'Unknown')
 
     # Create a log entry
